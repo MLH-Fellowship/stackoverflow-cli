@@ -1,0 +1,18 @@
+{
+	"name": "sprint4",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"repository": "MLH-Fellowship/sprint4.git",
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"homepage": "MLH-Fellowship/sprint4#readme",
+	"devDependencies": {
+		"prettier": "^2.2.0"
+	},
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\"",
+		"test": "node test.js"
+	}
+}
