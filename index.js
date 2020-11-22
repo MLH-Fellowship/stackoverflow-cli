@@ -8,6 +8,6 @@
 
 const init = require('./utils/init');
 
-(() => {
+(module.exports = () => {
 	init();
 })();
