@@ -7,7 +7,9 @@
  */
 
 const init = require('./utils/init');
+const cli = require('./utils/cli');
 
 (module.exports = () => {
 	init();
+	cli('how to sort a list in python');
 })();
