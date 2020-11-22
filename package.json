@@ -1,18 +1,23 @@
 {
-	"name": "sprint4",
+	"name": "stackoverflow-cli",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Work with the Stack OverFlow inside your terminal",
 	"main": "index.js",
 	"repository": "MLH-Fellowship/sprint4.git",
 	"keywords": [],
-	"author": "",
+	"author": {
+		"name": "Saad Irfan, Angelina Gasharova, Aneesh Kodali"
+	},
 	"license": "MIT",
 	"homepage": "MLH-Fellowship/sprint4#readme",
-	"devDependencies": {
-		"prettier": "^2.2.0"
-	},
 	"scripts": {
 		"format": "prettier --write \"./**/*.{js,json}\"",
 		"test": "node test.js"
+	},
+	"dependencies": {
+		"cli-welcome": "^2.2.2"
+	},
+	"devDependencies": {
+		"prettier": "^2.2.0"
 	}
 }
