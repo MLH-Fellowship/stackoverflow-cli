@@ -34,7 +34,11 @@ module.exports = async question => {
 		for (const [key, value] of Object.entries(data['items'])) {
 			let item = value["body_markdown"];
 			data['items'][key]['body_markdown'] = decodeEntities(item).split('\r\n');
-			
+
+			// nullify the body for UX purposes (body prop not used)
+			data['items'][key]['body'] = []
+
+
 			// Uncomment the code below in order to concat the body_markdown array into one string
 			//let whole_string = '';
 			//for(substring_key in data['items'][key]['body_markdown']){
