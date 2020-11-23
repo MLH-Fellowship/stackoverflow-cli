@@ -7,7 +7,6 @@ const baseUrl = 'https://api.stackexchange.com/2.2/search/advanced';
 const site = 'stackoverflow';
 const filter = '!)rTkraPXy17fPqpx7wE5';
 
-
 const decodeEntities = encodedString => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
 	const translate = {
@@ -28,7 +27,6 @@ const decodeEntities = encodedString => {
 };
 
 module.exports = async (question, flags) => {
-
 	// spinner
 	const spinner = ora();
 
@@ -73,7 +71,7 @@ module.exports = async (question, flags) => {
 
 		let { items } = data;
 		console.log(items);
- 
+
 		spinner.stop();
 	} catch (err) {
 		spinner.stop();
