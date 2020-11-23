@@ -32,8 +32,15 @@ module.exports = async question => {
 		);
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
-			item = value["body_markdown"];
-			data['items'][key]['body_markdown'] = decodeEntities(item);
+			let item = value["body_markdown"];
+			data['items'][key]['body_markdown'] = decodeEntities(item).split('\r\n');
+			
+			// Uncomment the code below in order to concat the body_markdown array into one string
+			//let whole_string = '';
+			//for(substring_key in data['items'][key]['body_markdown']){
+			//	whole_string += data['items'][key]['body_markdown'][substring_key];
+			//}
+			//data['items'][key]['body_markdown'] = whole_string
 		}
 		
 		let { items } = data;
