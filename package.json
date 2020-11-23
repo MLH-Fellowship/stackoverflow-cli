@@ -8,6 +8,13 @@
 	"author": {
 		"name": "Saad Irfan, Angelina Gasharova, Aneesh Kodali"
 	},
+	"bin": {
+		"stack": "index.js"
+	},
+	"files": [
+		"index.js",
+		"utils/*"
+	],
 	"license": "MIT",
 	"homepage": "MLH-Fellowship/sprint4#readme",
 	"scripts": {
@@ -16,8 +23,10 @@
 	},
 	"dependencies": {
 		"axios": "^0.21.0",
+		"cli-meow-help": "^2.0.2",
 		"cli-welcome": "^2.2.2",
 		"enquirer": "^2.3.6",
+		"meow": "^8.0.0",
 		"ora": "^5.1.0"
 	},
 	"devDependencies": {

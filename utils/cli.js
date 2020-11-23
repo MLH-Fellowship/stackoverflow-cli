@@ -4,10 +4,9 @@ const ora = require('ora');
 // base url
 const baseUrl = 'https://api.stackexchange.com/2.2/search/advanced';
 // default params
-const order = 'desc';
-const sort = 'relevance';
 const site = 'stackoverflow';
 const filter = '!)rTkraPXy17fPqpx7wE5';
+
 
 const decodeEntities = encodedString => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
@@ -28,9 +27,23 @@ const decodeEntities = encodedString => {
 		});
 };
 
-module.exports = async question => {
+module.exports = async (question, flags) => {
+
 	// spinner
 	const spinner = ora();
+
+	// default params
+	const order = flags.indexOf(`--asc`) >= 0 ? 'asc' : 'desc';
+	let sort;
+	if (flags.indexOf(`--activity`) >= 0) {
+		sort = `activity`;
+	} else if (flags.indexOf(`--votes`) >= 0) {
+		sort = `votes`;
+	} else if (flags.indexOf(`--creation`) >= 0) {
+		sort = `creation`;
+	} else {
+		sort = `relevance`;
+	}
 
 	// making API call
 	try {
@@ -39,6 +52,7 @@ module.exports = async question => {
 		const { data } = await axios.get(
 			`${baseUrl}?order=${order}&sort=${sort}&q=${question}&site=${site}&filter=${filter}`
 		);
+
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
 			let item = value['body_markdown'];
@@ -59,6 +73,7 @@ module.exports = async question => {
 
 		let { items } = data;
 		console.log(items);
+ 
 		spinner.stop();
 	} catch (err) {
 		spinner.stop();
