@@ -10,6 +10,8 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 
 (module.exports = async () => {
+	let flags = [];
+	flags = [...process.argv.slice(2)];
 	const question = await init();
-	cli(question);
+	cli(question, flags);
 })();
