@@ -16,7 +16,9 @@
 	},
 	"dependencies": {
 		"axios": "^0.21.0",
-		"cli-welcome": "^2.2.2"
+		"cli-welcome": "^2.2.2",
+		"enquirer": "^2.3.6",
+		"ora": "^5.1.0"
 	},
 	"devDependencies": {
 		"prettier": "^2.2.0"
