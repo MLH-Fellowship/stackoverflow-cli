@@ -9,22 +9,24 @@ const sort = 'relevance';
 const site = 'stackoverflow';
 const filter = '!)rTkraPXy17fPqpx7wE5';
 
-function decodeEntities(encodedString) {
-    var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-    var translate = {
-        "nbsp":" ",
-        "amp" : "&",
-        "quot": "\"",
-        "lt"  : "<",
-        "gt"  : ">"
-    };
-    return encodedString.replace(translate_re, function(match, entity) {
-        return translate[entity];
-    }).replace(/&#(\d+);/gi, function(match, numStr) {
-        var num = parseInt(numStr, 10);
-        return String.fromCharCode(num);
-    });
-}
+const decodeEntities = encodedString => {
+	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+	const translate = {
+		nbsp: ' ',
+		amp: '&',
+		quot: '"',
+		lt: '<',
+		gt: '>'
+	};
+	return encodedString
+		.replace(translate_re, function (match, entity) {
+			return translate[entity];
+		})
+		.replace(/&#(\d+);/gi, function (match, numStr) {
+			const num = parseInt(numStr, 10);
+			return String.fromCharCode(num);
+		});
+};
 
 module.exports = async question => {
 	// spinner
@@ -39,12 +41,13 @@ module.exports = async question => {
 		);
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
-			let item = value["body_markdown"];
-			data['items'][key]['body_markdown'] = decodeEntities(item).split('\r\n');
+			let item = value['body_markdown'];
+			data['items'][key]['body_markdown'] = decodeEntities(item).split(
+				'\r\n'
+			);
 
 			// nullify the body for UX purposes (body prop not used)
-			data['items'][key]['body'] = []
-
+			data['items'][key]['body'] = [];
 
 			// Uncomment the code below in order to concat the body_markdown array into one string
 			//let whole_string = '';
@@ -53,7 +56,7 @@ module.exports = async question => {
 			//}
 			//data['items'][key]['body_markdown'] = whole_string
 		}
-		
+
 		let { items } = data;
 		console.log(items);
 		spinner.stop();
