@@ -1,8 +1,14 @@
 // importing packages
 const welcome = require('cli-welcome');
+const { Input } = require('enquirer');
 const pkgJSON = require('../package.json');
 
-module.exports = () => {
+const prompt = new Input({
+	name: 'question',
+	message: 'What is your question?'
+});
+
+module.exports = async () => {
 	welcome({
 		title: pkgJSON.name,
 		tagLine: `by ${pkgJSON.author.name}`,
@@ -13,4 +19,13 @@ module.exports = () => {
 		clear: true,
 		version: `${pkgJSON.version}`
 	});
+
+	let answer;
+
+	try {
+		answer = await prompt.run();
+	} catch (error) {
+		console.error(error);
+	}
+	return answer;
 };
