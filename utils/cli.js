@@ -1,6 +1,7 @@
 const axios = require('axios');
 const ora = require('ora');
 const results = require('./results');
+const handleError = require('node-cli-handle-error');
 
 // base url
 const baseUrl = 'https://api.stackexchange.com/2.2/search/advanced';
@@ -9,6 +10,10 @@ const site = 'stackoverflow';
 const filter = '!)rTkraPXy17fPqpx7wE5';
 const pageSize = 10;
 
+/**
+ *
+ * @param encodedString - string to decode
+ */
 const decodeEntities = encodedString => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
 	const translate = {
@@ -53,6 +58,7 @@ module.exports = async (question, flags) => {
 			`${baseUrl}?order=${order}&sort=${sort}&q=${question}&pageSize=${pageSize}&site=${site}&filter=${filter}`
 		);
 		spinner.succeed();
+		console.log('');
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
 			let item = value['body_markdown'];
@@ -75,7 +81,6 @@ module.exports = async (question, flags) => {
 		results(items);
 	} catch (err) {
 		spinner.fail();
-		// console.error(`Error: ${err.response.data.error_message}`);
-		console.log(err);
+		handleError(`Something went wrong.`, err);
 	}
 };

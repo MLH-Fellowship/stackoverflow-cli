@@ -4,37 +4,39 @@ const chalk = require('chalk');
 
 /**
  *
+ * @param index - thread number
+ */
+const formatThread = (index, thread) => {
+	return `${chalk.dim(`Thread #${index + 1}`)}\n\n${chalk
+		.hex(`#14b514`)
+		.bold.inverse(`  TITLE   `)} ${thread[index].title}\n\n${chalk
+		.hex(`#14b514`)
+		.bold.inverse(` QUESTION `)} ${thread[index].body}\n\n${chalk.dim(
+		`Press ESC to exit.`
+	)}`;
+};
+
+/**
+ *
  * @param array - That has all the data
  */
-const switchResult = info => {
-	let thread = `${chalk.hex(`#14b514`).bold.inverse(`  TITLE   `)} ${
-		info[0].title
-	}\n\n${chalk.hex(`#14b514`).bold.inverse(` QUESTION `)} ${info[0].body}`;
-
-	logUpdate(thread);
-
+const switchResult = threads => {
 	let counter = 0;
+	logUpdate(formatThread(counter, threads));
 
-	// switch the result back and forth from left and right arrow keys
+	// switch the result back and forth from left and right arrow keys and exits with escape key
 	keypress(process.stdin);
 	process.stdin.on('keypress', function (ch, key) {
-		if (key.name === 'right' && counter !== info.length - 1) {
+		if (key.name === 'right' && counter !== threads.length - 1) {
 			counter++;
-			thread = `${chalk.hex(`#14b514`).bold.inverse(`  TITLE   `)} ${
-				info[counter].title
-			}\n\n${chalk.hex(`#14b514`).bold.inverse(` QUESTION `)} ${
-				info[counter].body
-			}`;
-			logUpdate(thread);
+			logUpdate(formatThread(counter, threads));
 		}
 		if (key.name === 'left' && counter !== 0) {
 			counter--;
-			thread = `${chalk.hex(`#14b514`).bold.inverse(`  TITLE   `)} ${
-				info[counter].title
-			}\n\n${chalk.hex(`#14b514`).bold.inverse(` QUESTION `)} ${
-				info[counter].body
-			}`;
-			logUpdate(thread);
+			logUpdate(formatThread(counter, threads));
+		}
+		if (key.name === 'escape') {
+			process.exit();
 		}
 	});
 
@@ -53,6 +55,5 @@ module.exports = results => {
 		basicInfoOfQuestions.push(infoObj);
 	});
 
-	console.log('\n');
 	switchResult(basicInfoOfQuestions);
 };
