@@ -1,12 +1,19 @@
 const axios = require('axios');
 const ora = require('ora');
+const results = require('./results');
+const handleError = require('node-cli-handle-error');
 
 // base url
 const baseUrl = 'https://api.stackexchange.com/2.2/search/advanced';
 // default params
 const site = 'stackoverflow';
 const filter = '!)rTkraPXy17fPqpx7wE5';
+const pageSize = 10;
 
+/**
+ *
+ * @param encodedString - string to decode
+ */
 const decodeEntities = encodedString => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
 	const translate = {
@@ -17,10 +24,10 @@ const decodeEntities = encodedString => {
 		gt: '>'
 	};
 	return encodedString
-		.replace(translate_re, function (match, entity) {
+		.replace(translate_re, (match, entity) => {
 			return translate[entity];
 		})
-		.replace(/&#(\d+);/gi, function (match, numStr) {
+		.replace(/&#(\d+);/gi, (match, numStr) => {
 			const num = parseInt(numStr, 10);
 			return String.fromCharCode(num);
 		});
@@ -28,7 +35,7 @@ const decodeEntities = encodedString => {
 
 module.exports = async (question, flags) => {
 	// spinner
-	const spinner = ora();
+	const spinner = ora(`Fetching results for your query...`);
 
 	// default params
 	const order = flags.indexOf(`--asc`) >= 0 ? 'asc' : 'desc';
@@ -48,9 +55,10 @@ module.exports = async (question, flags) => {
 		console.log('');
 		spinner.start();
 		const { data } = await axios.get(
-			`${baseUrl}?order=${order}&sort=${sort}&q=${question}&site=${site}&filter=${filter}`
+			`${baseUrl}?order=${order}&sort=${sort}&q=${question}&pageSize=${pageSize}&site=${site}&filter=${filter}`
 		);
-
+		spinner.succeed();
+		console.log('');
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
 			let item = value['body_markdown'];
@@ -62,19 +70,17 @@ module.exports = async (question, flags) => {
 			data['items'][key]['body'] = [];
 
 			// Uncomment the code below in order to concat the body_markdown array into one string
-			//let whole_string = '';
-			//for(substring_key in data['items'][key]['body_markdown']){
-			//	whole_string += data['items'][key]['body_markdown'][substring_key];
-			//}
-			//data['items'][key]['body_markdown'] = whole_string
+			// let whole_string = '';
+			// for (substring_key in data['items'][key]['body_markdown']) {
+			// 	whole_string +=
+			// 		data['items'][key]['body_markdown'][substring_key];
+			// }
+			// data['items'][key]['body_markdown'] = whole_string;
 		}
-
 		let { items } = data;
-		console.log(items);
-
-		spinner.stop();
+		results(items, order, sort);
 	} catch (err) {
-		spinner.stop();
-		console.error(`Error: ${err.response.data.error_message}`);
+		spinner.fail();
+		handleError(`Something went wrong.`, err);
 	}
 };
