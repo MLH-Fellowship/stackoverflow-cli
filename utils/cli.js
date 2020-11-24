@@ -78,7 +78,7 @@ module.exports = async (question, flags) => {
 			// data['items'][key]['body_markdown'] = whole_string;
 		}
 		let { items } = data;
-		results(items);
+		results(items, order, sort);
 	} catch (err) {
 		spinner.fail();
 		handleError(`Something went wrong.`, err);
