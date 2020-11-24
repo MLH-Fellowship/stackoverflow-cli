@@ -1,5 +1,6 @@
 const axios = require('axios');
 const ora = require('ora');
+const results = require('./results');
 
 // base url
 const baseUrl = 'https://api.stackexchange.com/2.2/search/advanced';
@@ -70,11 +71,11 @@ module.exports = async (question, flags) => {
 			// }
 			// data['items'][key]['body_markdown'] = whole_string;
 		}
-
 		let { items } = data;
-		console.log('\n\n', items[0]);
+		results(items);
 	} catch (err) {
 		spinner.fail();
-		console.error(`Error: ${err.response.data.error_message}`);
+		// console.error(`Error: ${err.response.data.error_message}`);
+		console.log(err);
 	}
 };
