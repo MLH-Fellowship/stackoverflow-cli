@@ -4,7 +4,11 @@
 	"description": "Work with the Stack Overflow inside your terminal",
 	"main": "index.js",
 	"repository": "MLH-Fellowship/stackoverflow-cli.git",
-	"keywords": [],
+	"keywords": [
+		"stackoverflow",
+		"stackoverflow-cli",
+		"developer tool"
+	],
 	"author": {
 		"name": "Saad Irfan, Angelina Gasharova, Aneesh Kodali"
 	},
