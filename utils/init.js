@@ -3,6 +3,7 @@ const welcome = require('cli-welcome');
 const { Input } = require('enquirer');
 const meow = require('meow');
 const meowHelp = require('cli-meow-help');
+const updateNotifier = require('update-notifier');
 const pkgJSON = require('../package.json');
 
 /*
@@ -80,6 +81,9 @@ module.exports = async () => {
 	while (question === '') {
 		question = await getInput();
 	}
+
+	// checks for CLI update
+	updateNotifier({ pkgJSON }).notify();
 
 	return question;
 };
