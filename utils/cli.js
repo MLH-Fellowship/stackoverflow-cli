@@ -79,14 +79,6 @@ module.exports = async (question, flags) => {
 
 			// nullify the body for UX purposes (body prop not used)
 			data['items'][key]['body'] = [];
-
-			// Uncomment the code below in order to concat the body_markdown array into one string
-			// let whole_string = '';
-			// for (substring_key in data['items'][key]['body_markdown']) {
-			// 	whole_string +=
-			// 		data['items'][key]['body_markdown'][substring_key];
-			// }
-			// data['items'][key]['body_markdown'] = whole_string;
 		}
 		let { items } = data;
 		results(items, order, sort);
