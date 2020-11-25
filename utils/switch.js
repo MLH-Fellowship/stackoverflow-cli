@@ -2,6 +2,7 @@ const keypress = require('keypress');
 const logUpdate = require('log-update');
 const chalk = require('chalk');
 const { info } = require('log-symbols');
+const end = require('./end');
 
 /**
  *
@@ -76,6 +77,7 @@ module.exports = (threads, order, sort) => {
 			);
 		}
 		if (key.name === 'escape') {
+			end();
 			process.exit();
 		}
 	});
