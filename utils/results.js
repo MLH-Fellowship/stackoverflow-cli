@@ -7,6 +7,10 @@ const switchResult = require('./switch');
  */
 const threadAns = thread => {
 	const temp = [];
+	if (typeof thread === 'undefined') {
+		return temp;
+	}
+
 	thread.map(ans => {
 		temp.push(ans.body_markdown);
 	});
