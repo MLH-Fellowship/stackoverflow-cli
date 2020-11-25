@@ -3,7 +3,7 @@
 /**
  *
  * Author Saad Irfan, Angelina Gasharova, Aneesh Kodali
- * GitHub <https://github.com/MLH-Fellowship/sprint4>
+ * GitHub <https://github.com/MLH-Fellowship/stackoverflow-cli>
  */
 
 const init = require('./utils/init');

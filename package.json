@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Work with the Stack Overflow inside your terminal",
 	"main": "index.js",
-	"repository": "MLH-Fellowship/sprint4.git",
+	"repository": "MLH-Fellowship/stackoverflow-cli.git",
 	"keywords": [],
 	"author": {
 		"name": "Saad Irfan, Angelina Gasharova, Aneesh Kodali"
@@ -16,7 +16,7 @@
 		"utils/*"
 	],
 	"license": "MIT",
-	"homepage": "MLH-Fellowship/sprint4#readme",
+	"homepage": "MLH-Fellowship/stackoverflow-cli#readme",
 	"scripts": {
 		"format": "prettier --write \"./**/*.{js,json}\"",
 		"test": "jest --detectOpenHandles"
