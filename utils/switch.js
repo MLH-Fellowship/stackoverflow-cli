@@ -1,6 +1,7 @@
 const keypress = require('keypress');
 const logUpdate = require('log-update');
 const chalk = require('chalk');
+const { info } = require('log-symbols');
 
 /**
  *
@@ -8,7 +9,7 @@ const chalk = require('chalk');
  * @return string - formated string
  */
 const formatThread = (indexOfThread, indexOfAns, thread, order, sort) => {
-	return `${chalk.dim(
+	return `${info} ${chalk.dim(
 		`Thread #${indexOfThread + 1} | Order: ${order} | Sort By: ${sort}`
 	)}\n\n${chalk.hex(`#14b514`).bold.inverse(`   TITLE    `)} ${
 		thread[indexOfThread].title
