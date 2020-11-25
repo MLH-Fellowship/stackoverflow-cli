@@ -1,5 +1,5 @@
 {
-	"name": "stackoverflow-cli",
+	"name": "@msaaddev/stackoverflow-cli",
 	"version": "1.0.0",
 	"description": "Work with the Stack Overflow inside your terminal",
 	"main": "index.js",

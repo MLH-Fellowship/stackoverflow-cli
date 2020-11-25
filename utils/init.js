@@ -66,7 +66,7 @@ const cliHelpText = () => {
 module.exports = async () => {
 	cliHelpText() ||
 		welcome({
-			title: pkgJSON.name,
+			title: `stackoverflow-cli`,
 			tagLine: `by ${pkgJSON.author.name}`,
 			description: `${pkgJSON.description}`,
 			bgColor: `#f48024`,
