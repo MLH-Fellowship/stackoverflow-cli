@@ -62,7 +62,7 @@ const cliHelpText = () => {
 	meow(helpText, { flags });
 };
 
-module.exports = () => {
+module.exports = async () => {
 	cliHelpText() ||
 		welcome({
 			title: pkgJSON.name,
@@ -75,5 +75,11 @@ module.exports = () => {
 			version: `${pkgJSON.version}`
 		});
 
-	return getInput();
+	// Make sure user enters a question that's not an empty string
+	let question = '';
+	while (question === '') {
+		question = await getInput();
+	}
+
+	return question;
 };

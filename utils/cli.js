@@ -56,6 +56,11 @@ module.exports = async (question, flags) => {
 		sort = `relevance`;
 	}
 
+	// check if question is empty string
+	if (question === '') {
+		return 'You did not enter a question. Please enter one';
+	}
+
 	// making API call
 	try {
 		console.log('');

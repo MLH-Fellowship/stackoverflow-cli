@@ -19,7 +19,7 @@
 	"homepage": "MLH-Fellowship/sprint4#readme",
 	"scripts": {
 		"format": "prettier --write \"./**/*.{js,json}\"",
-		"test": "jest"
+		"test": "jest --detectOpenHandles"
 	},
 	"dependencies": {
 		"axios": "^0.21.0",
