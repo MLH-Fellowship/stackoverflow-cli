@@ -1,56 +1,32 @@
-const keypress = require('keypress');
-const logUpdate = require('log-update');
-const chalk = require('chalk');
+const switchResult = require('./switch');
 
 /**
  *
- * @param index - thread number
+ * @param thread - stackoverflow thread for answers
+ * @return - array of answers of the threads
  */
-const formatThread = (index, thread, order, sort) => {
-	return `${chalk.dim(
-		`Thread #${index + 1} | Order: ${order} | Sort By: ${sort}`
-	)}\n\n${chalk.hex(`#14b514`).bold.inverse(`  TITLE   `)} ${
-		thread[index].title
-	}\n\n${chalk.hex(`#14b514`).bold.inverse(` QUESTION `)} ${
-		thread[index].body
-	}\n\n${chalk.dim(`Press ESC to exit.`)}`;
-};
-
-/**
- *
- * @param array - That has all the data
- */
-const switchResult = (threads, order, sort) => {
-	let counter = 0;
-	logUpdate(formatThread(counter, threads, order, sort));
-
-	// switch the result back and forth from left and right arrow keys and exits with escape key
-	keypress(process.stdin);
-	process.stdin.on('keypress', function (ch, key) {
-		if (key.name === 'right' && counter !== threads.length - 1) {
-			counter++;
-			logUpdate(formatThread(counter, threads, order, sort));
-		}
-		if (key.name === 'left' && counter !== 0) {
-			counter--;
-			logUpdate(formatThread(counter, threads, order, sort));
-		}
-		if (key.name === 'escape') {
-			process.exit();
-		}
+const threadAns = thread => {
+	const temp = [];
+	thread.map(ans => {
+		temp.push(ans.body_markdown);
 	});
-
-	process.stdin.setRawMode(true);
-	process.stdin.resume();
+	return temp;
 };
 
+/**
+ *
+ * @param results - stackoverflow threads
+ * @param order - order of results
+ * @param sort - sort of results
+ */
 module.exports = (results, order, sort) => {
 	let basicInfoOfQuestions = [];
 
 	results.map(result => {
 		const infoObj = {
 			title: result.title,
-			body: result.body_markdown
+			body: result.body_markdown,
+			answers: threadAns(result.answers)
 		};
 		basicInfoOfQuestions.push(infoObj);
 	});

@@ -13,6 +13,7 @@ const pageSize = 10;
 /**
  *
  * @param encodedString - string to decode
+ * @return decodedSring
  */
 const decodeEntities = encodedString => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
@@ -33,6 +34,11 @@ const decodeEntities = encodedString => {
 		});
 };
 
+/**
+ *
+ * @param question - user inputed question
+ * @param flags - user provided flags
+ */
 module.exports = async (question, flags) => {
 	// spinner
 	const spinner = ora(`Fetching results for your query...`);
