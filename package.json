@@ -1,7 +1,7 @@
 {
 	"name": "stackoverflow-cli",
 	"version": "1.0.0",
-	"description": "Work with the Stack OverFlow inside your terminal",
+	"description": "Work with the Stack Overflow inside your terminal",
 	"main": "index.js",
 	"repository": "MLH-Fellowship/sprint4.git",
 	"keywords": [],
