@@ -83,7 +83,7 @@ module.exports = async () => {
 	}
 
 	// checks for CLI update
-	updateNotifier({ pkgJSON }).notify();
+	updateNotifier({ pkg: pkgJSON }).notify();
 
 	return question;
 };
