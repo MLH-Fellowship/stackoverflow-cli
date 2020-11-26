@@ -43,7 +43,7 @@ module.exports = (results, order, sort) => {
 
 	results.map(result => {
 		const infoObj = {
-			title: result.title,
+			title: typeof result.title === 'undefined' ? '' : result.title,
 			body: format(result.body_markdown),
 			answers: threadAns(result.answers)
 		};
