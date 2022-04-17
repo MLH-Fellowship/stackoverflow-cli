@@ -1,10 +1,11 @@
 // importing packages
-const welcome = require('cli-welcome');
-const { Input } = require('enquirer');
-const meow = require('meow');
-const meowHelp = require('cli-meow-help');
-const updateNotifier = require('update-notifier');
+const welcome = require('cli-welcome'); // Welcome header for Node.js CLI software.
+const { Input } = require('enquirer'); // Stylish CLI prompts that are user-friendly, intuitive and easy to create.
+const meow = require('meow'); // CLI app helper 
+const meowHelp = require('cli-meow-help'); // Generate automatically formatted help text for meow CLI helper
+const updateNotifier = require('update-notifier'); // Update notifications for your CLI app
 const pkgJSON = require('../package.json');
+const boxen = require('boxen');
 
 /*
  *
@@ -13,11 +14,11 @@ const pkgJSON = require('../package.json');
 const getInput = async () => {
 	const prompt = new Input({
 		name: 'question',
-		message: 'What is your question?'
+		message: 'What is your question? check'
 	});
 
 	let answer;
-
+	
 	try {
 		answer = await prompt.run();
 	} catch (error) {
@@ -31,11 +32,11 @@ const getInput = async () => {
  *	generates cli help text
  */
 const cliHelpText = () => {
-	const commands = {
+	const commands = { // COMMANDS
 		none: { desc: `No commands available for ${pkgJSON.name}` }
 	};
 
-	const flags = {
+	const flags = { // OPTIONS
 		asc: {
 			desc: `Order the results in ascending order`,
 			default: 'desc'
@@ -54,7 +55,7 @@ const cliHelpText = () => {
 		}
 	};
 
-	const helpText = meowHelp({
+	const helpText = meowHelp({ // USAGE
 		name: `stack`,
 		commands,
 		flags
