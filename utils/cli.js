@@ -26,7 +26,6 @@ const decodeEntities = encodedString => { //+) encodedString을 input으로 받�
 	};
 	return encodedString
 		.replace(translate_re, (match, entity) => {
-			//console.log("trans: "+translate[entity])
 			return translate[entity];
 		})
 		.replace(/&#(\d+);/gi, (match, numStr) => {
@@ -73,19 +72,14 @@ module.exports = async (question, flags) => {
 		const { data } = await axios.get( //+) axios.get(url, config): 데이터 조회 -> api 통신
 			`${baseUrl}?order=${order}&sort=${sort}&q=${question}&pageSize=${pageSize}&site=${site}&filter=${filter}`
 		);
-		/*
-		for(var key in data){
-			console.log(data['items'][key])
-		}*/
 		//console.log("check" + Object.keys(data['items']))
 		spinner.succeed();
 		console.log('');
 		// decode html characters to regular chars
 		for (const [key, value] of Object.entries(data['items'])) {
-			let item = value['body_markdown']; 
-			//console.log("question : "+item+" //\n")
+			let item = value['body_markdown'];
 			data['items'][key]['body_markdown'] = decodeEntities(item).split(
-				'\r\n' // 이거로 질문 구분되어 있음
+				'\r\n'
 			);
 			for(const [ans_key, ans_value] of Object.entries(data['items'][key]['answers'])){
 				let ans_item = ans_value['body_markdown'];
@@ -99,6 +93,7 @@ module.exports = async (question, flags) => {
 			// nullify the body for UX purposes (body prop not used)
 			data['items'][key]['body'] = [];
 		}
+		// 출력결과 확인용 로그
 		//console.log("question : "+JSON.stringify(data['items'][4]['body_markdown'])+" //\n")
 		//console.log("answer : "+JSON.stringify(data['items'][2]['answers'][2]['body_markdown'])+" //\n")
 		let { items } = data;
