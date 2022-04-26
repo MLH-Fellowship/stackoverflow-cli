@@ -14,6 +14,7 @@ const threadAns = thread => {
 	//console.log(thread); ------> 객체 구조 확인하기 좋음!
 	thread.map(ans => { //+) map : callbackfn을 실행한 결과를 가지고 새로운 배열을 만듦
 		let body = '';
+		//console.log("mark_down: "+ans.body_markdown)
 		for(const index of ans.body_markdown){
 			body += `${index}\n`
 		}
