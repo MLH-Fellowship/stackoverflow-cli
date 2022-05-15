@@ -4,7 +4,8 @@ const chalk = require('chalk');
 const { info } = require('log-symbols'); // Colored symbols for various log levels
 const end = require('./end');
 const output = require('./output');
-const index = require('../new');
+const save = require('./save');
+//const index = require('../new');
 
 /**
  *
@@ -75,6 +76,19 @@ module.exports = (threads, order, sort) => {
 		}
 		if (key.name === 'r'){
 			index();
+		}
+		if (key.name === 's') {
+			console.log('현재 스레드 저장을 원하십니까?');
+			//console.log(counterOfThread);
+			var selected_title = threads[counterOfThread].title;
+			//console.log(threads[counterOfThread].title);
+			//console.log(selected_title);
+			//console.log(counterOfAnswer);
+			var selected_body = threads[counterOfThread].body;
+			//console.log(threads[counterOfThread].body);
+			//console.log(threads[counterOfThread].answers[counterOfAnswer]);
+			var selected_answer = threads[counterOfThread].answers[counterOfAnswer];
+			save(selected_title, selected_body, selected_answer);
 		}
 	});
 	process.stdin.setRawMode(true);
