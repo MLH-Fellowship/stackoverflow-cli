@@ -1,21 +1,23 @@
 const keypress = require('keypress');
 const logUpdate = require('log-update'); // Log by overwriting the previous output in the terminal.
 const chalk = require('chalk');
+const boxen = require('boxen');
 const { info } = require('log-symbols'); // Colored symbols for various log levels
 const end = require('./end');
 const output = require('./output');
 const save = require('./save');
-//const index = require('../new');
+const browser = require('./browser');
+const inquirer = require('inquirer');
+let check= "";
 
 /**
  *
  * @param index - thread number
  * @return string - formated string
  */
-// TITLE, QUESTION, ANSWER #n이 아예 안뜰때도 있음 -> 터미널 화면보다 출력되는 값이 더 크면 잘리는 상황 -> console.log는 괜찮고 logUpdate만 그럼
 
 const formatThread = (indexOfThread, indexOfAns, thread, order, sort) => {
-	return `${info} ${chalk.dim( // dim - Make the text have lower opacity
+	return `${check}${info} ${chalk.dim( // dim - Make the text have lower opacity
 		`Thread #${indexOfThread + 1} | Order: ${order} | Sort By: ${sort}`
 	)}\n\n${chalk.hex(`#14b514`).bold.inverse(`   TITLE    `)} ${ // inverse- Invert background and foreground colors.
 		thread[indexOfThread].title
@@ -39,58 +41,171 @@ const formatThread = (indexOfThread, indexOfAns, thread, order, sort) => {
 module.exports = (threads, order, sort) => {
 	let counterOfThread = 0;
 	let counterOfAnswer = 0;
-	logUpdate(formatThread(counterOfThread, 0, threads, order, sort))
+	let saveThread;
+	let saveAnswer;
+
 	console.log(formatThread(counterOfThread, 0, threads, order, sort))
 
 	// switch the result back and forth from left and right arrow keys and exits with escape key
 	keypress(process.stdin);
 	process.stdin.on('keypress', function (ch, key) {
 		if (key.name === 'right' && counterOfThread !== threads.length - 1) { // Thread가 끝나지 않았다면 ~하는 조건문
+			console.clear()
 			counterOfThread++;
 			counterOfAnswer = 0;
-			//logUpdate(formatThread(counterOfThread, 0, threads, order, sort))
-			console.log(formatThread(counterOfThread, 0, threads, order, sort))
+			if(saveThread == counterOfThread && saveAnswer == 0){
+				check = "< Selected Question & Answer >\n\n"
+				console.log(boxen(formatThread(counterOfThread, 0, threads, order, sort)))
+				check=""
+			}else
+				console.log(formatThread(counterOfThread, 0, threads, order, sort))
 		}
 		if (key.name === 'left' && counterOfThread !== 0) {
+			console.clear()
 			counterOfThread--;
 			counterOfAnswer = 0;
-			//logUpdate(formatThread(counterOfThread, 0, threads, order, sort))
-			console.log(formatThread(counterOfThread, 0, threads, order, sort))
+			if(saveThread == counterOfThread && saveAnswer == 0){
+				check = "< Selected Question & Answer >\n\n"
+				console.log(boxen(formatThread(counterOfThread, 0, threads, order, sort)))
+				check=""
+			}else
+				console.log(formatThread(counterOfThread, 0, threads, order, sort))
 		}
 		if (
 			key.name === 'up' &&
 			counterOfAnswer !== threads[counterOfThread].answers.length - 1
 		) {
+			console.clear()
 			counterOfAnswer++;
-			//logUpdate(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
-			console.log(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
+			if(saveThread == counterOfThread && saveAnswer == counterOfAnswer){
+				check = "< Selected Question & Answer >\n\n"
+				console.log(boxen(formatThread(counterOfThread, counterOfAnswer, threads, order, sort)))
+				check=""
+			}else
+				console.log(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
 		}
 		if (key.name === 'down' && counterOfAnswer !== 0) {
+			console.clear()
 			counterOfAnswer--;
-			//logUpdate(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
-			console.log(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
+			if(saveThread == counterOfThread && saveAnswer == counterOfAnswer){
+				check = "< Selected Question & Answer >\n\n"
+				console.log(boxen(formatThread(counterOfThread, counterOfAnswer, threads, order, sort)))
+				check=""
+			}else
+				console.log(formatThread(counterOfThread, counterOfAnswer, threads, order, sort))
 		}
 		if (key.name === 'escape') {
 			end();
 			process.exit();
 		}
-		if (key.name === 'r'){
-			index();
+		if (key.name === 's'){	//save
+			check="< Selected Question & Answer >\n\n"
+			saveThread = counterOfThread;
+			saveAnswer = counterOfAnswer;
+			console.log(boxen(formatThread(saveThread, saveAnswer, threads, order, sort)))
+			check=""
+			
+
+			var selected_title = threads[saveThread].title;
+			var selected_body = threads[saveThread].body;
+			var selected_answer = threads[saveThread].answers[saveAnswer];
+	
+			saveConfirm()	
+			.then((flag) => {
+				if (flag == true)
+				{
+					save(selected_title, selected_body, selected_answer);
+					// saveThread = null;
+					// saveAnswer = null;
+					// process.stdin.setRawMode(true);
+					// process.stdin.resume();
+				}
+				else {
+					console.clear();
+					console.log(formatThread(saveThread, saveAnswer, threads, order, sort));
+					saveThread = null;
+					saveAnswer = null;
+					process.stdin.setRawMode(true);
+					process.stdin.resume();
+				}
+			});
 		}
-		if (key.name === 's') {
-			console.log('현재 스레드 저장을 원하십니까?');
-			//console.log(counterOfThread);
-			var selected_title = threads[counterOfThread].title;
-			//console.log(threads[counterOfThread].title);
-			//console.log(selected_title);
-			//console.log(counterOfAnswer);
-			var selected_body = threads[counterOfThread].body;
-			//console.log(threads[counterOfThread].body);
-			//console.log(threads[counterOfThread].answers[counterOfAnswer]);
-			var selected_answer = threads[counterOfThread].answers[counterOfAnswer];
-			save(selected_title, selected_body, selected_answer);
+		if (key.name === 'b'){	// browser
+			check="< Selected Question & Answer >\n\n"
+			saveThread = counterOfThread;
+			saveAnswer = counterOfAnswer;
+			console.log(boxen(formatThread(saveThread, saveAnswer, threads, order, sort)))
+			check=""
+			
+
+			var selected_title = threads[saveThread].title;
+			var selected_body = threads[saveThread].body;
+			var selected_answer = threads[saveThread].answers[saveAnswer];
+	
+			browserConfirm()	
+			.then((flag) => {
+				if (flag == true)
+				{
+					browser();
+					// saveThread = null;
+					// saveAnswer = null;
+					// process.stdin.setRawMode(true);
+					// process.stdin.resume();
+				}
+				else {
+					console.clear();
+					console.log(formatThread(saveThread, saveAnswer, threads, order, sort));
+					saveThread = null;
+					saveAnswer = null;
+					process.stdin.setRawMode(true);
+					process.stdin.resume();
+				}
+			});
+		}
+		if(key.name === 'c'){
+			console.clear()
 		}
 	});
 	process.stdin.setRawMode(true);
 	process.stdin.resume();
+};
+
+
+const saveConfirm = async () => {
+	var save_flag;
+	await inquirer.prompt([{
+		type: "confirm",
+		name: "proceed",
+		message: "Do you want to save currently selected box?"
+	}])
+	.then((answers) => {
+		if (answers.proceed == true)
+		{
+			save_flag = true;
+		}
+		else {
+			save_flag = false;
+		}
+	});
+	return save_flag;
+};
+
+
+const browserConfirm = async () => {
+	var save_flag;
+	await inquirer.prompt([{
+		type: "confirm",
+		name: "proceed",
+		message: "Do you want to open a browser?"
+	}])
+	.then((answers) => {
+		if (answers.proceed == true)
+		{
+			save_flag = true;
+		}
+		else {
+			save_flag = false;
+		}
+	});
+	return save_flag;
 };

@@ -33,12 +33,14 @@
 		"cli-meow-help": "^2.0.2",
 		"cli-welcome": "^2.2.2",
 		"enquirer": "^2.3.6",
+		"inquirer": "^8.2.4",
 		"keypress": "^0.2.1",
 		"log-symbols": "^4.0.0",
 		"log-update": "^4.0.0",
 		"meow": "^8.0.0",
 		"node-cli-handle-error": "^1.0.0",
 		"ora": "^5.1.0",
+		"os": "^0.1.2",
 		"update-notifier": "^5.0.1"
 	},
 	"devDependencies": {
